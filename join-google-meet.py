@@ -1,135 +1,140 @@
+# Author : Pratik Shinde
+
 from selenium import webdriver
 from datetime import datetime
 import time
 import pause
 
-USERNAME = ""
+EMAIL_ID = ""
 PASSWORD = ""
 
-mosc_metting_url = "https://meet.google.com/wiz-wqmp-qui"
-mosc_class_days = [1, 2, 3]
-mosc_class_time = [12, 8, 12]
-
-vlsi_meeting_url = "https://meet.google.com/zej-uoht-yxa"
-vlsi_class_days = [2, 4, 5]
-vlsi_class_time = [13, 14, 14]
-
-year = int(datetime.today().strftime('%Y'))
-month = int(datetime.today().strftime('%m'))
-date = int(datetime.today().strftime('%d'))
-hour = int(datetime.today().strftime('%H'))
-day = datetime.today().weekday() + 1
-mosc_joining_time = 0
-vlsi_joining_time = 0
+subjects = ['MOSC', "https://meet.google.com/wiz-wqmp-qui",
+            'VLSI', "https://meet.google.com/zej-uoht-yxa"]
+classes = ["monday", "MOSC", 12,
+           "tuesday", "MOSC", 8,
+           "tuesday", "VLSI", 12,
+           "wednesday", "MOSC", 12,
+           "thursday", "VLSI", 14,
+           "friday", "VLSI", 14]
+days = [
+    'sunday', 'monday', 'tuesday', 'wednesday',
+    'thursday', 'friday', 'saturday']
 
 
-def join_meeting(google_meet_url):
-    driver = webdriver.Chrome()
+def join_meeting(lecture, url):
+    email_input = "/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div[" \
+                  "1]/div/form/span/section/div/div/div[1]/div/div[1]/div/div[1]/input "
+    next_button = "/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div[2]/div/div[" \
+                  "1]/div/div/button/div[2] "
+    password_input = "/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div[" \
+                     "1]/div/form/span/section/div/div/div[1]/div[1]/div/div/div/div/div[1]/div/div[1]/input "
+    close_button = "#yDmH0d > div.llhEMd.iWO5td > div > div.g3VIld.B2Jb7d.Up8vH.hFEqNb.J9Nfi.iWO5td > " \
+                   "div.R6Lfte.es33Kc.TNczib.X1clqd > div.bZWIgd > div > span > span > svg "
+    dismiss_button = "/html/body/div[1]/div[3]/div/div[2]/div[3]/div/span/span"
+    join_button = "/html/body/div[1]/c-wiz/div/div/div[5]/div[3]/div/div[2]/div/div/div[2]/div/div[2]/div/div[1]/div[" \
+                  "1]/span/span "
+    end_button = "/html/body/div[1]/c-wiz/div[1]/div/div[5]/div[3]/div[9]/div[2]/div[2]/div"
+    
+    print('Joining ' + lecture[1] + ' class')
+    
+    # driver = webdriver.Chrome()
+    driver = webdriver.Chrome(executable_path='C:\chromedriver.exe')
     
     # Google login
     driver.get('https://accounts.google.com/signin')
-    
-    username = driver.find_element_by_xpath(
-        "/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/div["
-        "1]/div/div[1]/div/div[1]/input")
-    username.send_keys(USERNAME)
-    driver.find_element_by_xpath(
-        "/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div[2]/div/div[1]/div/div/button/div[2]").click()
+    driver.find_element_by_xpath(email_input).send_keys(EMAIL_ID)
+    driver.find_element_by_xpath(next_button).click()
     time.sleep(3)
-    
-    password = driver.find_element_by_xpath(
-        "/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/div["
-        "1]/div[1]/div/div/div/div/div[1]/div/div[1]/input")
-    password.send_keys(PASSWORD)
-    driver.find_element_by_xpath(
-        "/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div[2]/div/div[1]/div/div/button/div[2]").click()
+    driver.find_element_by_xpath(password_input).send_keys(PASSWORD)
+    driver.find_element_by_xpath(next_button).click()
     time.sleep(3)
-    
+
     # Join meeting
     time.sleep(5)
-    driver.get(google_meet_url)
+    driver.get(url)
     time.sleep(3)
     
     try:
-        close_popup = driver.find_element_by_css_selector("#yDmH0d > div.llhEMd.iWO5td > div > "
-                                                          "div.g3VIld.B2Jb7d.Up8vH.hFEqNb.J9Nfi.iWO5td > "
-                                                          "div.R6Lfte.es33Kc.TNczib.X1clqd > div.bZWIgd > div > span "
-                                                          "> span > svg")
-        close_popup.click()
+        driver.find_element_by_css_selector(close_button).click()
         time.sleep(1)
     except:
         pass
     try:
-        dismiss = driver.find_element_by_xpath("/html/body/div[1]/div[3]/div/div[2]/div[3]/div/span/span")
-        dismiss.click()
+        driver.find_element_by_xpath(dismiss_button).click()
         time.sleep(1)
     except:
         pass
     
-    driver.find_element_by_xpath(
-        "/html/body/div[1]/c-wiz/div/div/div[5]/div[3]/div/div[2]/div/div/div[2]/div/div[2]/div/div[1]/div[1]/span/span").click()
+    driver.find_element_by_xpath(join_button).click()
     time.sleep(1)
-    
     print("You're in the class..")
     time.sleep(3600)
-    driver.find_element_by_xpath("/html/body/div[1]/c-wiz/div[1]/div/div[5]/div[3]/div[9]/div[2]/div[2]/div").click()
     
+    # End meeting
+    driver.find_element_by_xpath(end_button).click()
     driver.close()
 
 
-def join_mosc(mosc_joining_time):
-    print("MOSC class is at " + str(mosc_joining_time) + " IST. Waiting..")
-    pause.until(datetime(year, month, date, mosc_joining_time))
-    # join_meeting(mosc_metting_url)
-
-
-def join_vlsi(vlsi_joining_time):
-    print("VLSI class is at " + str(vlsi_joining_time) + " IST. Waiting..")
-    pause.until(datetime(year, month, date, vlsi_joining_time))
-    # join_meeting(vlsi_meeting_url)
-
-
-if not mosc_class_days.__contains__(day) and not vlsi_class_days.__contains__(day):
-    print("Chill.. There are no classes today!")
-    exit()
-
-mosc = False
-vlsi = False
-if mosc_class_days.__contains__(day):
-    mosc_joining_time = mosc_class_time[mosc_class_days.index(day)]
-    if hour >= mosc_joining_time + 1:
-        print('MOSC class was at ' + str(mosc_joining_time) + ' IST. It\'s already over')
+def queue(lecture):
+    # Get calendar details for today
+    year = int(datetime.today().strftime('%Y'))
+    month = int(datetime.today().strftime('%m'))
+    date = int(datetime.today().strftime('%d'))
+    hour = int(datetime.today().strftime('%H'))
+    
+    # Get Google meet url
+    url = subjects[subjects.index(lecture[1]) + 1]
+    
+    if hour < lecture[0]:
+        print(lecture[1] + ' class is at ' + str(lecture[0]) + '00 IST. Waiting..')
+        # Pause until lecture starts
+        pause.until(datetime(year, month, date, lecture[0]))
+        join_meeting(lecture, url)
     else:
-        mosc = True
+        join_meeting(lecture, url)
 
-if vlsi_class_days.__contains__(day):
-    vlsi_joining_time = vlsi_class_time[vlsi_class_days.index(day)]
-    if hour >= vlsi_joining_time + 1:
-        print('VLSI class was at ' + str(vlsi_joining_time) + ' IST. It\'s already over')
-    else:
-        vlsi = True
 
-if not mosc and not vlsi:
-    print("No more classes today!")
-    exit()
-if vlsi and not mosc:
-    join_vlsi(vlsi_joining_time)
-    print("VLSI class over!")
-    exit()
-if mosc and not vlsi:
-    join_mosc(mosc_joining_time)
-    print("MOSC class over!")
-    exit()
-else:
-    if vlsi_joining_time < mosc_joining_time:
-        join_vlsi(vlsi_joining_time)
-        print("VLSI class over!")
-        join_mosc(mosc_joining_time)
-        print("MOSC class over!")
-        exit()
-    else:
-        join_mosc(mosc_joining_time)
-        print("MOSC class over!")
-        join_vlsi(vlsi_joining_time)
-        print("VLSI class over!")
-        exit()
+def good_to_go():
+    index = 0
+    flag = True
+    if EMAIL_ID[-10:] != "@gmail.com":
+        print("Please enter valid Email ID")
+    if len(PASSWORD) < 1:
+        print("Please enter valid Password")
+    while index < len(classes):
+        if not days.__contains__(classes[index].lower()):
+            print(str(classes[index]) + ' is not a valid day'); flag = False
+        index += 1
+        if not subjects.__contains__(classes[index]):
+            print(str(classes[index]) + ' is not a valid subject'); flag = False
+        index += 1
+        if not 0 < classes[index] < 23:
+            print(str(classes[index]) + ' is not a valid time'); flag = False
+        index += 1
+    return flag
+
+
+def todays_schedule():
+    # Get calendar details for today
+    hour = int(datetime.today().strftime('%H'))
+    day = datetime.today().strftime('%A')
+    schedule = []
+    for item in range(0, len(classes), 3):
+        if classes[item] == day.lower():
+            class_end_time = classes[item + 2] + 1
+            if class_end_time <= hour:
+                print(classes[item + 1] + ' class ended at ' + str(class_end_time) + '00 IST.')
+            else:
+                lecture_info = [classes[item + 2], classes[item + 1]]
+                schedule.append(lecture_info)
+    return schedule
+
+
+#
+# Mainline starts here
+#
+
+if good_to_go():
+    todays_schedule = sorted(todays_schedule())
+    print('Chill.. No more classes today !!') if len(todays_schedule) == 0 \
+        else [queue(lectures) for lectures in sorted(todays_schedule)]
