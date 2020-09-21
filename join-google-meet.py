@@ -4,6 +4,7 @@ from selenium import webdriver
 from datetime import datetime
 import time
 import pause
+from selenium.webdriver.chrome.options import Options
 
 EMAIL_ID = ""
 PASSWORD = ""
@@ -37,8 +38,15 @@ def join_meeting(lecture, url):
     
     print('Joining ' + lecture[1] + ' class')
     
-    # driver = webdriver.Chrome()
-    driver = webdriver.Chrome(executable_path='C:\chromedriver.exe')
+    chrome_options = Options()
+    chrome_options.add_argument("--disable-infobars")
+    chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    chrome_options.add_experimental_option("prefs", {"profile.default_content_setting_values.media_stream_mic": 2,
+                                                     "profile.default_content_setting_values.media_stream_camera": 2,
+                                                     "profile.default_content_setting_values.notifications": 2
+                                                     })
+    driver = webdriver.Chrome(options=chrome_options)
+    # driver = webdriver.Chrome(executable_path='C:\chromedriver.exe', options=chrome_options)
     
     # Google login
     driver.get('https://accounts.google.com/signin')
