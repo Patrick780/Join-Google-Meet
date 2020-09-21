@@ -133,11 +133,8 @@ def todays_schedule():
     for item in range(0, len(classes), 3):
         if classes[item] == day.lower():
             class_end_time = classes[item + 2] + 1
-            if class_end_time <= hour:
-                print(classes[item + 1] + ' class ended at ' + str(class_end_time) + '00 IST.')
-            else:
-                lecture_info = [classes[item + 2], classes[item + 1]]
-                schedule.append(lecture_info)
+            print(classes[item + 1] + ' class ended at ' + str(class_end_time) + '00 IST.') if class_end_time <= hour \
+                else schedule.append([classes[item + 2], classes[item + 1]])
     return schedule
 
 
