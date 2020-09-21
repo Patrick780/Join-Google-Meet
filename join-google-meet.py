@@ -111,13 +111,16 @@ def good_to_go():
         print("Please enter valid Password")
     while index < len(classes):
         if not days.__contains__(classes[index].lower()):
-            print(str(classes[index]) + ' is not a valid day'); flag = False
+            print(str(classes[index]) + ' is not a valid day')
+            flag = False
         index += 1
         if not subjects.__contains__(classes[index]):
-            print(str(classes[index]) + ' is not a valid subject'); flag = False
+            print(str(classes[index]) + ' is not a valid subject')
+            flag = False
         index += 1
         if not 0 < classes[index] < 23:
-            print(str(classes[index]) + ' is not a valid time'); flag = False
+            print(str(classes[index]) + ' is not a valid time')
+            flag = False
         index += 1
     return flag
 
