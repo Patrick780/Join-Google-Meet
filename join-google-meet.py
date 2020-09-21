@@ -97,7 +97,7 @@ def queue(lecture):
 def good_to_go():
     index = 0
     flag = True
-    if EMAIL_ID[-10:] != "@gmail.com":
+    if len(EMAIL_ID) < 1:
         print("Please enter valid Email ID")
     if len(PASSWORD) < 1:
         print("Please enter valid Password")
