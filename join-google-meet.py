@@ -9,8 +9,8 @@ from selenium.webdriver.chrome.options import Options
 EMAIL_ID = ""
 PASSWORD = ""
 
-subjects = ['MOSC', "https://meet.google.com/wiz-wqmp-qui",
-            'VLSI', "https://meet.google.com/zej-uoht-yxa"]
+subjects = ['MOSC', "wiz-wqmp-qui",
+            'VLSI', "zej-uoht-yxa"]
 classes = ["monday", "MOSC", 12,
            "tuesday", "MOSC", 8,
            "tuesday", "VLSI", 12,
@@ -59,7 +59,7 @@ def join_meeting(lecture, url):
 
     # Join meeting
     time.sleep(5)
-    driver.get(url)
+    driver.get("https://meet.google.com/" + url)
     time.sleep(3)
     
     try:
